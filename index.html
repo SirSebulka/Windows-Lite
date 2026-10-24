@@ -399,7 +399,7 @@ Dostupné verze
 <div class="card download-card">
 
 <h3>Windows Lite CZ</h3>
-<p id="czVer">Verze 24H2</p>
+<p id="czVer">Načítání...</p>
 
 <button id="czBtn" class="main-btn download" onclick="downloadBuild('cs')">
 Stáhnout CZ
@@ -410,7 +410,7 @@ Stáhnout CZ
 <div class="card download-card">
 
 <h3>Windows Lite EN</h3>
-
+<p id="enVer"></p>
 <p id="enStatus">
 Kontrola...
 </p>
@@ -436,32 +436,42 @@ Download EN
 
 const builds = {
     cs:{
-        available:true,
-        url:""
+        available: true,
+        url: "",
+        version: "24H2"
     },
 
     en:{
-        available:false,
-        url:""
+        available: false,
+        url: "",
+        version: ""
     }
 };
 
 fetch('cz.txt')
     .then(res => res.text())
     .then(text => {
-        const url = text.trim();
-        if(url) builds.cs.url = url;
-    });
+        const lines = text.split(/\r?\n/);
+        if(lines[0]) builds.cs.url = lines[0].trim();
+        if(lines[1] && lines[1].trim()) {
+            builds.cs.version = lines[1].trim();
+        }
+        updateVersionDisplay();
+    }).catch(() => {});
 
 fetch('en.txt')
     .then(res => res.text())
     .then(text => {
-        const url = text.trim();
-        if(url){
-            builds.en.url = url;
+        const lines = text.split(/\r?\n/);
+        if(lines[0]) builds.en.url = lines[0].trim();
+        if(lines[1] && lines[1].trim()) {
+            builds.en.version = lines[1].trim();
+        }
+        if(lines[0] && lines[0].trim()){
             builds.en.available = true;
             checkEN();
         }
+        updateVersionDisplay();
     }).catch(() => {});
 
 function downloadBuild(lang){
@@ -500,6 +510,22 @@ function checkEN(){
     }
 }
 
+function updateVersionDisplay() {
+    const czVer = document.getElementById("czVer");
+    const enVer = document.getElementById("enVer");
+    
+    if(czVer) {
+        czVer.innerText = currentLang === 'cs' ? `Verze ${builds.cs.version}` : `Version ${builds.cs.version}`;
+    }
+    if(enVer) {
+        if(builds.en.version) {
+            enVer.innerText = currentLang === 'cs' ? `Verze ${builds.en.version}` : `Version ${builds.en.version}`;
+        } else {
+            enVer.innerText = "";
+        }
+    }
+}
+
 let currentLang="cs";
 
 function setLanguage(lang){
@@ -516,7 +542,6 @@ function setLanguage(lang){
         document.getElementById("downloadTitle").innerText = "Available Versions";
         document.getElementById("heroDownload").innerText = "Download";
         document.getElementById("czBtn").innerText = "Download CZ";
-        document.getElementById("czVer").innerText = "Version 24H2";
 
         document.getElementById("feat1Title").innerText = "Speed";
         document.getElementById("feat1Desc").innerText = "Lower system requirements and faster response.";
@@ -540,7 +565,6 @@ function setLanguage(lang){
         document.getElementById("downloadTitle").innerText = "Dostupné verze";
         document.getElementById("heroDownload").innerText = "Stáhnout";
         document.getElementById("czBtn").innerText = "Stáhnout CZ";
-        document.getElementById("czVer").innerText = "Verze 24H2";
 
         document.getElementById("feat1Title").innerText = "Rychlost";
         document.getElementById("feat1Desc").innerText = "Menší nároky a rychlejší odezva.";
@@ -555,6 +579,7 @@ function setLanguage(lang){
         document.getElementById("feat4Desc").innerText = "Méně předinstalovaných aplikací.";
     }
 
+    updateVersionDisplay();
     checkEN();
 }
 
@@ -583,6 +608,7 @@ document
 .querySelectorAll(".hidden")
 .forEach(el=>observer.observe(el));
 
+updateVersionDisplay();
 checkEN();
 
 </script>
