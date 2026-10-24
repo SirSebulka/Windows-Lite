@@ -437,7 +437,7 @@ Download EN
 const builds = {
     cs:{
         available:true,
-        url:"downloads/windowslite-cz.iso"
+        url:""
     },
 
     en:{
@@ -445,6 +445,24 @@ const builds = {
         url:""
     }
 };
+
+fetch('cz.txt')
+    .then(res => res.text())
+    .then(text => {
+        const url = text.trim();
+        if(url) builds.cs.url = url;
+    });
+
+fetch('en.txt')
+    .then(res => res.text())
+    .then(text => {
+        const url = text.trim();
+        if(url){
+            builds.en.url = url;
+            builds.en.available = true;
+            checkEN();
+        }
+    }).catch(() => {});
 
 function downloadBuild(lang){
     const build = builds[lang];
