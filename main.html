@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Windows Lite</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+    --bg:#f4f8fc;
+    --card:rgba(255,255,255,.75);
+    --text:#111;
+    --primary:#0078d4;
+    --secondary:#f8f9fb;
+    --shadow:0 20px 40px rgba(0,0,0,.12);
+}
+
+.dark{
+    --bg:#0f172a;
+    --card:rgba(30,41,59,.75);
+    --text:#fff;
+    --primary:#4ea1ff;
+    --secondary:#111827;
+    --shadow:0 20px 40px rgba(0,0,0,.5);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",sans-serif;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+    transition: background 0.6s ease, color 0.6s ease;
+    overflow-x:hidden;
+}
+
+/* TOP BAR */
+
+.navbar{
+    position:fixed;
+    width:100%;
+    top:0;
+    z-index:999;
+    padding:20px 40px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    backdrop-filter:blur(15px);
+    background:rgba(255,255,255,.2);
+}
+
+.dark .navbar{
+    background:rgba(0,0,0,.25);
+}
+
+.controls{
+    display:flex;
+    gap:10px;
+}
+
+.btn-small{
+    border:none;
+    cursor:pointer;
+    padding:12px 18px;
+    border-radius:12px;
+    background:rgba(255,255,255,.6);
+    backdrop-filter:blur(10px);
+    font-weight:600;
+    transition:.3s;
+}
+
+.btn-small:hover{
+    transform:translateY(-2px);
+}
+
+.dark .btn-small{
+    background:rgba(255,255,255,.08);
+    color:white;
+}
+
+/* HERO */
+
+.hero{
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    overflow:hidden;
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background:url("https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000")
+    center center/cover;
+
+    transform:scale(1.05);
+    filter:saturate(110%);
+}
+
+.hero::after{
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background:
+    linear-gradient(to bottom,
+    rgba(255,255,255,.2),
+    rgba(255,255,255,.7));
+}
+
+.dark .hero::after{
+    background:
+    linear-gradient(to bottom,
+    rgba(0,0,0,.25),
+    rgba(15,23,42,.8));
+}
+
+.hero-card{
+
+    position:relative;
+    z-index:5;
+
+    max-width:700px;
+    width:90%;
+
+    padding:40px;
+
+    border-radius:30px;
+
+    background:var(--card);
+
+    backdrop-filter:blur(25px);
+
+    box-shadow:var(--shadow);
+
+    text-align:center;
+
+    animation:showHero 1s ease;
+}
+
+@keyframes showHero{
+    from{
+        opacity:0;
+        transform:translateY(50px);
+    }
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
+
+.hero h1{
+    font-size:4rem;
+    margin-bottom:15px;
+}
+
+.hero p{
+    font-size:1.2rem;
+    opacity:.8;
+    margin-bottom:25px;
+}
+
+.buttons{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.main-btn{
+
+    padding:15px 35px;
+    border:none;
+
+    border-radius:15px;
+
+    cursor:pointer;
+
+    font-size:1rem;
+    font-weight:700;
+
+    transition:.3s;
+}
+
+.download{
+    background:var(--primary);
+    color:white;
+}
+
+.support{
+    background:#16a34a;
+    color:white;
+}
+
+.main-btn:hover{
+    transform:translateY(-4px);
+}
+
+/* CONTENT */
+
+.section{
+    max-width:1200px;
+    margin:auto;
+    padding:100px 20px;
+}
+
+.section h2{
+    text-align:center;
+    margin-bottom:50px;
+    font-size:2.5rem;
+}
+
+.features{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:30px;
+}
+
+.card{
+    background:var(--card);
+    backdrop-filter:blur(20px);
+    border-radius:25px;
+    padding:30px;
+    text-align:center;
+
+    box-shadow:var(--shadow);
+
+    transition:.4s;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+}
+
+.icon{
+    font-size:3rem;
+    margin-bottom:20px;
+}
+
+/* DOWNLOADS */
+
+.downloads{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:30px;
+}
+
+.download-card button{
+    width:100%;
+    margin-top:15px;
+}
+
+.disabled{
+    background:#777 !important;
+    cursor:not-allowed;
+}
+
+.notice{
+    margin-top:10px;
+    color:#f59e0b;
+    font-weight:bold;
+}
+
+/* SCROLL ANIMATION */
+
+.hidden{
+    opacity:0;
+    transform:translateY(40px);
+    transition:.8s;
+}
+
+.show{
+    opacity:1;
+    transform:none;
+}
+
+footer{
+    text-align:center;
+    padding:50px;
+    opacity:.7;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+
+<h2>Windows Lite</h2>
+
+<div class="controls">
+
+<button class="btn-small" onclick="toggleTheme()">
+🌙
+</button>
+
+<button class="btn-small" onclick="setLanguage('cs')">
+CZ
+</button>
+
+<button class="btn-small" onclick="setLanguage('en')">
+EN
+</button>
+
+</div>
+
+</div>
+
+<section class="hero">
+
+<div class="hero-card">
+
+<h1 id="title">
+Windows Lite
+</h1>
+
+<p id="subtitle">
+Odlehčená verze systému Windows.
+</p>
+
+<div class="buttons">
+
+<button id="heroDownload" class="main-btn download" onclick="document.getElementById('download-section').scrollIntoView({behavior: 'smooth'})">
+Stáhnout
+</button>
+
+<button id="supportBtn" class="main-btn support">
+Podpořit projekt
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="section hidden">
+
+<h2 id="whyTitle">Proč Windows Lite?</h2>
+
+<div class="features">
+
+<div class="card">
+<div class="icon">⚡</div>
+<h3 id="feat1Title">Rychlost</h3>
+<p id="feat1Desc">Menší nároky a rychlejší odezva.</p>
+</div>
+
+<div class="card">
+<div class="icon">🧠</div>
+<h3 id="feat2Title">RAM</h3>
+<p id="feat2Desc">Nižší spotřeba operační paměti.</p>
+</div>
+
+<div class="card">
+<div class="icon">🎮</div>
+<h3 id="feat3Title">Gaming</h3>
+<p id="feat3Desc">Více výkonu pro hry.</p>
+</div>
+
+<div class="card">
+<div class="icon">🔧</div>
+<h3 id="feat4Title">Čistota</h3>
+<p id="feat4Desc">Méně předinstalovaných aplikací.</p>
+</div>
+
+</div>
+
+</section>
+
+<section class="section hidden" id="download-section">
+
+<h2 id="downloadTitle">
+Dostupné verze
+</h2>
+
+<div class="downloads">
+
+<div class="card download-card">
+
+<h3>Windows Lite CZ</h3>
+<p id="czVer">Verze 24H2</p>
+
+<button id="czBtn" class="main-btn download" onclick="downloadBuild('cs')">
+Stáhnout CZ
+</button>
+
+</div>
+
+<div class="card download-card">
+
+<h3>Windows Lite EN</h3>
+
+<p id="enStatus">
+Kontrola...
+</p>
+
+<button id="enButton"
+class="main-btn download" onclick="downloadBuild('en')">
+Download EN
+</button>
+
+<div id="notice" class="notice"></div>
+
+</div>
+
+</div>
+
+</section>
+
+<footer>
+© 2026 Windows Lite Project
+</footer>
+
+<script>
+
+const builds = {
+    cs:{
+        available:true,
+        url:"downloads/windowslite-cz.iso"
+    },
+
+    en:{
+        available:false,
+        url:""
+    }
+};
+
+function downloadBuild(lang){
+    const build = builds[lang];
+    if(build && build.available && build.url){
+        window.location.href = build.url;
+    } else if(lang === 'en' && !builds.en.available) {
+        alert(currentLang === 'cs' ? "Anglická verze ještě není dostupná." : "English version is not available yet.");
+    }
+}
+
+function checkEN(){
+
+    const button = document.getElementById("enButton");
+    const status = document.getElementById("enStatus");
+    const notice = document.getElementById("notice");
+
+    if(!builds.en.available){
+
+        button.classList.add("disabled");
+
+        status.innerText =
+        currentLang === "cs" ? "Zatím nedostupné" : "Not available yet";
+
+        notice.innerText =
+        currentLang==="cs"
+
+        ? "Anglická verze ještě není dostupná. Můžete stáhnout CZ verzi."
+        : "English version is not available yet. You can download Czech version.";
+
+    }else{
+
+        status.innerText = currentLang === "cs" ? "Připraveno" : "Ready";
+
+        notice.innerText="";
+    }
+}
+
+let currentLang="cs";
+
+function setLanguage(lang){
+
+    currentLang=lang;
+
+    if(lang==="en"){
+
+        document.documentElement.lang="en";
+
+        document.getElementById("subtitle").innerText = "Lightweight Windows build.";
+        document.getElementById("supportBtn").innerText = "Support project";
+        document.getElementById("whyTitle").innerText = "Why Windows Lite?";
+        document.getElementById("downloadTitle").innerText = "Available Versions";
+        document.getElementById("heroDownload").innerText = "Download";
+        document.getElementById("czBtn").innerText = "Download CZ";
+        document.getElementById("czVer").innerText = "Version 24H2";
+
+        document.getElementById("feat1Title").innerText = "Speed";
+        document.getElementById("feat1Desc").innerText = "Lower system requirements and faster response.";
+
+        document.getElementById("feat2Title").innerText = "RAM";
+        document.getElementById("feat2Desc").innerText = "Lower memory consumption.";
+
+        document.getElementById("feat3Title").innerText = "Gaming";
+        document.getElementById("feat3Desc").innerText = "More performance for games.";
+
+        document.getElementById("feat4Title").innerText = "Cleanliness";
+        document.getElementById("feat4Desc").innerText = "Fewer pre-installed apps.";
+
+    }else{
+
+        document.documentElement.lang="cs";
+
+        document.getElementById("subtitle").innerText = "Odlehčená verze systému Windows.";
+        document.getElementById("supportBtn").innerText = "Podpořit projekt";
+        document.getElementById("whyTitle").innerText = "Proč Windows Lite?";
+        document.getElementById("downloadTitle").innerText = "Dostupné verze";
+        document.getElementById("heroDownload").innerText = "Stáhnout";
+        document.getElementById("czBtn").innerText = "Stáhnout CZ";
+        document.getElementById("czVer").innerText = "Verze 24H2";
+
+        document.getElementById("feat1Title").innerText = "Rychlost";
+        document.getElementById("feat1Desc").innerText = "Menší nároky a rychlejší odezva.";
+
+        document.getElementById("feat2Title").innerText = "RAM";
+        document.getElementById("feat2Desc").innerText = "Nižší spotřeba operační paměti.";
+
+        document.getElementById("feat3Title").innerText = "Gaming";
+        document.getElementById("feat3Desc").innerText = "Více výkonu pro hry.";
+
+        document.getElementById("feat4Title").innerText = "Čistota";
+        document.getElementById("feat4Desc").innerText = "Méně předinstalovaných aplikací.";
+    }
+
+    checkEN();
+}
+
+function toggleTheme(){
+    document.body.classList.toggle("dark");
+}
+
+/* Scroll animation */
+
+const observer =
+new IntersectionObserver(entries=>{
+
+entries.forEach(entry=>{
+
+if(entry.isIntersecting){
+
+entry.target.classList.add("show");
+
+}
+
+});
+
+});
+
+document
+.querySelectorAll(".hidden")
+.forEach(el=>observer.observe(el));
+
+checkEN();
+
+</script>
+
+</body>
+</html>
